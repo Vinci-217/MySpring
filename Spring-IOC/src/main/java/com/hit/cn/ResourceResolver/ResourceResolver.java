@@ -1,4 +1,4 @@
-package com.hit.cn;
+package com.hit.cn.ResourceResolver;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
