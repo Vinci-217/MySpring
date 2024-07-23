@@ -35,7 +35,7 @@ public class ResourceResolver {
     }
 
     /**
-     * 扫描类
+     * 扫描类解决器
      *
      * @param mapper
      * @param <R>
