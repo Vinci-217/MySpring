@@ -1,4 +1,4 @@
-package com.hit.cn.ResourceResolver;
+package com.vinci.cn.ResourceResolver;
 
 /**
  * 表示文件的记录，包含路径和名称

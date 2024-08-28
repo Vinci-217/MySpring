@@ -1,4 +1,4 @@
-package com.hit.cn.ResourceResolver;
+package com.vinci.cn.ResourceResolver;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 解析资源路径，相当于Spring中的@ComponentScan注解
  * 主要是解析文件路径和jar包路径，并找到资源文件
+ * 方法是获取当前线程的类加载器，然后获取指定路径下的所有类
  */
 public class ResourceResolver {
 
@@ -92,6 +93,7 @@ public class ResourceResolver {
      */
     ClassLoader getContextClassLoader() {
         ClassLoader cl = null;
+        // 获取当前线程的类加载器
         cl = Thread.currentThread().getContextClassLoader();
         if (cl == null) {
             cl = getClass().getClassLoader();
