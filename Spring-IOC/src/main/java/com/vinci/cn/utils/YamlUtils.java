@@ -1,4 +1,4 @@
-package com.vinci.cn.YamlUtils;
+package com.vinci.cn.utils;
 
 import java.util.LinkedHashMap;
 import java.util.List;

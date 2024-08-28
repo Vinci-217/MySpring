@@ -1,4 +1,4 @@
-package com.vinci.cn.YamlUtils;
+package com.vinci.cn.utils;
 
 
 import com.vinci.cn.io.InputStreamCallback;

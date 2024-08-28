@@ -1,4 +1,4 @@
-package com.vinci.cn.ResourceResolver;
+package com.vinci.cn.resource;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

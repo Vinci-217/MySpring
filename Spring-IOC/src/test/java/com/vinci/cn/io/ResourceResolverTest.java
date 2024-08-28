@@ -1,7 +1,7 @@
 package com.vinci.cn.io;
 
 import com.vinci.cn.annoscan.AnnoScan;
-import com.vinci.cn.ResourceResolver.ResourceResolver;
+import com.vinci.cn.resource.ResourceResolver;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.annotation.security.PermitAll;

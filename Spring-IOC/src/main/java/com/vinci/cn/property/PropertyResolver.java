@@ -1,4 +1,4 @@
-package com.vinci.cn.PropertyResolver;
+package com.vinci.cn.property;
 
 import java.time.Duration;
 import java.time.LocalDate;
