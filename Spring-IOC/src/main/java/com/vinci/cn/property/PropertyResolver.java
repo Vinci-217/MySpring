@@ -91,7 +91,7 @@ public class PropertyResolver {
     }
 
     /**
-     * 获取属性
+     * 获取给定键的属性
      *
      * @param key
      * @return

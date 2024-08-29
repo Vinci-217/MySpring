@@ -1,7 +1,7 @@
 package com.vinci.cn.utils;
 
 
-import com.vinci.cn.io.InputStreamCallback;
+import com.vinci.cn.property.InputStreamCallback;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,6 +10,9 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 
 
+/**
+ * 类路径工具类，用于读取类路径下的文件
+ */
 public class ClassPathUtils {
 
     public static <T> T readInputStream(String path, InputStreamCallback<T> inputStreamCallback) {
@@ -27,6 +30,12 @@ public class ClassPathUtils {
         }
     }
 
+
+    /**
+     * 读取文件内容并返回字符串
+     * @param path
+     * @return
+     */
     public static String readString(String path) {
         return readInputStream(path, (input) -> {
             byte[] data = input.readAllBytes();
@@ -34,6 +43,10 @@ public class ClassPathUtils {
         });
     }
 
+    /**
+     * 获取当前线程的类加载器，如果没有则返回默认的类加载器
+     * @return
+     */
     static ClassLoader getContextClassLoader() {
         ClassLoader cl = null;
         cl = Thread.currentThread().getContextClassLoader();

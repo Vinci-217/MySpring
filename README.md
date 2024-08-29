@@ -58,3 +58,24 @@ Spring的核心组件有：
 
 ![image-20240828172700512](https://s2.loli.net/2024/08/28/b2PSu8OZtUYi1JB.png)
 
+## Day 2: 实现IOC容器（2）
+
+### 2. 实现属性注入@Value注解
+
+在spring中的属性，一般是键值对的形式。`eg：spring.datasource.name:mysql`
+
+所以我们通过Map来实现属性保存和注入
+
+- **属性保存**
+
+![image-20240829173057011](https://s2.loli.net/2024/08/29/aTh7sveVdpg8MDx.png)
+
+在Spring中，属性在xml文件中；在SpringBoot中，属性在yaml文件中。所以这两种方式我们都要解析
+
+- **通过解析类路径，读取指定路径下的属性配置文件**
+
+![image-20240829175533382](https://s2.loli.net/2024/08/29/KnkZLmEc3U1qzsV.png)
+
+- **如果是yaml文件，就将文件中的属性配置转化为扁平的Map对象**
+
+![image-20240829175958059](https://s2.loli.net/2024/08/29/OhH1e9bKLyxPCnZ.png)

@@ -26,10 +26,15 @@ public class YamlUtils {
      */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> loadYaml(String path) {
+        // loaderOptions 是一个 LoaderOptions 对象，用于配置 YAML 加载器的选项
         var loaderOptions = new LoaderOptions();
+        // dumperOptions 是一个 DumperOptions 对象，用于配置 YAML 转储器的选项
         var dumperOptions = new DumperOptions();
+        // representer 是一个 Representer 对象，负责将 Java 对象转换为 YAML 格式
         var representer = new Representer(dumperOptions);
+        // resolver 是一个 NoImplicitResolver 对象，用于控制 YAML 解析过程中的隐式解析行为
         var resolver = new NoImplicitResolver();
+        // yaml 是一个 Yaml 对象，用于加载和解析 YAML 文件
         var yaml = new Yaml(new Constructor(loaderOptions), representer, dumperOptions, loaderOptions, resolver);
         return ClassPathUtils.readInputStream(path, (input) -> {
             return (Map<String, Object>) yaml.load(input);
@@ -46,6 +51,7 @@ public class YamlUtils {
     static void convertTo(Map<String, Object> source, String prefix, Map<String, Object> plain) {
         for (String key : source.keySet()) {
             Object value = source.get(key);
+            // 解析value的结构
             if (value instanceof Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> subMap = (Map<String, Object>) value;
