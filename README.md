@@ -1,5 +1,7 @@
 # 从0开始手写一个Spring
 
+![Java Version](https://img.shields.io/badge/Java%20Version-17%2B-green)
+
 > 作为一名Java程序员，每天总是和业务逻辑打交道。
 >
 > 时间久了，也自然会觉得有些许枯燥。
@@ -79,3 +81,42 @@ Spring的核心组件有：
 - **如果是yaml文件，就将文件中的属性配置转化为扁平的Map对象**
 
 ![image-20240829175958059](https://s2.loli.net/2024/08/29/OhH1e9bKLyxPCnZ.png)
+
+## Day 3: 实现IOC容器（3）
+
+### 3. 创建BeanDefinition
+
+我们知道在Spring中，Bean有多种类型。
+
+但这里我们为了简化，只给他一种类型，并且只有一种命名方式。
+
+由此我们也可以想到，可以用一个Map来存所有的Bean，并且通过注解的方式创建和使用
+
+- **创建注解**
+
+![image-20240831201408684](https://s2.loli.net/2024/08/31/EdcBWNT7UAvCu3J.png)
+
+- **作用于注解的方法示例**（通过类反射机制获取到注解和注解里面的变量值）
+
+![image-20240901104021321](https://s2.loli.net/2024/09/01/pNgcEwKf2zqMTnt.png)
+
+- **采用一个Map来管理所有的Bean**
+
+![image-20240901181618974](https://s2.loli.net/2024/09/01/cbWsURTNFg5hYlz.png)
+
+- **在构造方法中，通过扫描指定package下的所有类，然后将其中的Bean都注入到beans这个Map容器中**
+
+![image-20240901191857117](https://s2.loli.net/2024/09/01/VhQUNmfW7C9inoA.png)
+
+- **在扫描时，先要获取到启动类的@ComponentScan注解，然后获取注解的包路径，然后用之前实现的ResourceResolver类扫描**
+
+![image-20240901192609617](https://s2.loli.net/2024/09/01/9Hwi2QTkaAoEcfj.png)
+
+- **已经获得到了所有的类，接下来就判断这些类是否是Bean，如果是的话，就将他们加入到容器中**
+
+![image-20240901193210274](https://s2.loli.net/2024/09/01/8m5zIjFfLuXsbDn.png)
+
+- 自定义一个Application以后通过测试
+
+![image-20240901194922523](https://s2.loli.net/2024/09/01/K7wnFXgEhlMAmUN.png)
+
