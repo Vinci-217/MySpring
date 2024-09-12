@@ -59,6 +59,17 @@ public class AnnotationConfigApplicationContext {
         // 创建其他普通Bean:
         createNormalBeans();
 
+        // 通过字段和set方法注入依赖:
+        this.beans.values().forEach(def -> {
+            injectBean(def);
+        });
+
+        // 调用init方法:
+        this.beans.values().forEach(def -> {
+            initBean(def);
+        });
+
+
 
         if (logger.isDebugEnabled()) {
             this.beans.values().stream().sorted().forEach(def -> {
@@ -232,6 +243,25 @@ public class AnnotationConfigApplicationContext {
             }
         }
         return defs;
+    }
+
+    /**
+     * 注入依赖但不调用init方法
+     */
+    void injectBean(BeanDefinition def) {
+        try {
+            injectProperties(def, def.getBeanClass(), def.getInstance());
+        } catch (ReflectiveOperationException e) {
+            throw new BeanCreationException(e);
+        }
+    }
+
+    /**
+     * 调用init方法
+     */
+    void initBean(BeanDefinition def) {
+        // 调用init方法:
+        callMethod(def.getInstance(), def.getInitMethod(), def.getInitMethodName());
     }
 
     /**
@@ -659,5 +689,31 @@ public class AnnotationConfigApplicationContext {
     @SuppressWarnings("unchecked")
     protected <T> List<T> findBeans(Class<T> requiredType) {
         return findBeanDefinitions(requiredType).stream().map(def -> (T) def.getRequiredInstance()).collect(Collectors.toList());
+    }
+
+    /**
+     * 调用Bean实例的init/destroy方法
+     * @param beanInstance
+     * @param method
+     * @param namedMethod
+     */
+    private void callMethod(Object beanInstance, Method method, String namedMethod) {
+        // 调用init/destroy方法:
+        if (method != null) {
+            try {
+                method.invoke(beanInstance);
+            } catch (ReflectiveOperationException e) {
+                throw new BeanCreationException(e);
+            }
+        } else if (namedMethod != null) {
+            // 查找initMethod/destroyMethod="xyz"，注意是在实际类型中查找:
+            Method named = ClassUtils.getNamedMethod(beanInstance.getClass(), namedMethod);
+            named.setAccessible(true);
+            try {
+                named.invoke(beanInstance);
+            } catch (ReflectiveOperationException e) {
+                throw new BeanCreationException(e);
+            }
+        }
     }
 }
