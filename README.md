@@ -131,7 +131,7 @@ Spring的核心组件有：
 >
 > 第一步如果遇到循环依赖则直接报错，第二步则不需要关心有没有循环依赖。
 >
-> ——源自廖雪峰
+> ——By：廖雪峰
 
 我们是分这两步对Bean进行创建，原因如下：
 
@@ -180,7 +180,7 @@ Spring的核心组件有：
 >
 > **弱依赖注入**：依赖项是可选的，通常使用Setter方法注入或`@Autowired`的`required`属性为`false`。这种方式提供了更大的灵活性，但可能会增加处理依赖缺失的复杂性。
 >
-> ——来自ChatGPT
+> ——By：ChatGPT
 
 这里我们只需要查找`@Value`和`@Autowired`注入对应方法即可
 
@@ -203,3 +203,15 @@ Spring的核心组件有：
 - 测试并通过
 
 ![image-20240912104307614](https://s2.loli.net/2024/09/12/E96vJZVgx4GLsAB.png)
+
+## Day 6: 实现IOC容器（6）
+
+### 6. 实现BeanPostProcessor
+
+> `BeanPostProcessor` 是 Spring 框架中的一个接口，它允许你在 Spring 容器管理的 Bean 实例化之后、初始化之前，以及在整个生命周期中进行自定义的处理。这个接口为开发者提供了一个强大的机制，用于在 Bean 的创建和初始化过程中执行额外的操作。
+>
+> ——By：ChatGPT
+
+因为BeanPostProcessor是一个接口，所以我们在项目中只需要定义一个接口即可，然后再测试类中实现接口并测试具体功能
+
+![image-20240914213920214](https://s2.loli.net/2024/09/14/zyvTGP7H3hoNipj.png)
