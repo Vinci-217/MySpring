@@ -3,7 +3,7 @@ package com.vinci.cn.annotation;
 import java.lang.annotation.*;
 
 @Target({ElementType.FIELD,ElementType.METHOD,ElementType.PARAMETER})
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Autowired {
 

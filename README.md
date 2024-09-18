@@ -215,3 +215,31 @@ Spring的核心组件有：
 因为BeanPostProcessor是一个接口，所以我们在项目中只需要定义一个接口即可，然后再测试类中实现接口并测试具体功能
 
 ![image-20240914213920214](https://s2.loli.net/2024/09/14/zyvTGP7H3hoNipj.png)
+
+- **在ApplicationContext中添加用来存放BeanPostProcessor的容器**
+
+检测所有的Bean，看他们是否是BeanPostProcessor类型的Bean，如果是就加入到专门的容器里
+
+![image-20240918192223907](https://s2.loli.net/2024/09/18/KbFe3zZLyicRXOu.png)
+
+基于Class类的方法进行判断
+
+![image-20240918192305260](https://s2.loli.net/2024/09/18/X8HqCnAjeQ7l6D4.png)
+
+- **如果BeanPostProcessor替换了原有Bean，需要在对应BeanDefination里面进行实例的修改**
+
+![image-20240918193658812](https://s2.loli.net/2024/09/18/j7IwXJEbvmaDBUx.png)
+
+- **获取代理后的Bean实例**
+
+![image-20240918194436843](https://s2.loli.net/2024/09/18/bvBQatuFwDApzOx.png)
+
+> 关于为什么要更新BeanDefination
+
+![image-20240918194519539](https://s2.loli.net/2024/09/18/6MdWjPwsRxZvY2i.png)
+
+- 通过测试
+
+![image-20240918195415936](https://s2.loli.net/2024/09/18/tIk6edVONAu84Sb.png)
+
+关于SecondProxyBean：是通过`final OriginBean target;`并注入OriginBean的字段属性，实现了代理。其余两个分别是构造器代理和属性注入代理

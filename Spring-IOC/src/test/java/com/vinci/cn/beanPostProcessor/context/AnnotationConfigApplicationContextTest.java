@@ -21,6 +21,7 @@ public class AnnotationConfigApplicationContextTest {
         var ctx = new AnnotationConfigApplicationContext(ScanApplication.class, createPropertyResolver());
         // test proxy:
         OriginBean proxy = ctx.getBean(OriginBean.class);
+
         assertSame(SecondProxyBean.class, proxy.getClass());
         assertEquals("Scan App", proxy.getName());
         assertEquals("v1.0", proxy.getVersion());
