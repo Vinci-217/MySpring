@@ -243,3 +243,19 @@ Spring的核心组件有：
 ![image-20240918195415936](https://s2.loli.net/2024/09/18/tIk6edVONAu84Sb.png)
 
 关于SecondProxyBean：是通过`final OriginBean target;`并注入OriginBean的字段属性，实现了代理。其余两个分别是构造器代理和属性注入代理
+
+## Day 7: 实现IOC容器（7）
+
+- **创建IOC容器接口**
+
+![image-20240918200658763](https://s2.loli.net/2024/09/18/ogQ8L1GzxICDfHA.png)
+
+- **实现供用户使用的功能**
+
+![image-20240918201045998](https://s2.loli.net/2024/09/18/h67mrcMSN29bZOK.png)
+
+- **最后让之前实现的容器继承这个接口**
+
+![image-20240918201103847](https://s2.loli.net/2024/09/18/sh9zLbecvn2qJ4w.png)
+
+IOC容器完成！

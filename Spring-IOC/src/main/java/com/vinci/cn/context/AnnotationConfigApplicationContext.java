@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * 注解配置ApplicationContext
  */
-public class AnnotationConfigApplicationContext {
+public class AnnotationConfigApplicationContext implements ConfigurableApplicationContext {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -752,6 +752,18 @@ public class AnnotationConfigApplicationContext {
     @SuppressWarnings("unchecked")
     protected <T> List<T> findBeans(Class<T> requiredType) {
         return findBeanDefinitions(requiredType).stream().map(def -> (T) def.getRequiredInstance()).collect(Collectors.toList());
+    }
+
+    @Override
+    public void close() {
+        logger.info("Closing {}...", this.getClass().getName());
+        this.beans.values().forEach(def -> {
+            final Object beanInstance = getProxiedInstance(def);
+            callMethod(beanInstance, def.getDestroyMethod(), def.getDestroyMethodName());
+        });
+        this.beans.clear();
+        logger.info("{} closed.", this.getClass().getName());
+        ApplicationContextUtils.setApplicationContext(null);
     }
 
     /**
