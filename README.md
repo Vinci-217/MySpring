@@ -246,6 +246,8 @@ Spring的核心组件有：
 
 ## Day 7: 实现IOC容器（7）
 
+### 7. 实现IOC容器
+
 - **创建IOC容器接口**
 
 ![image-20240918200658763](https://s2.loli.net/2024/09/18/ogQ8L1GzxICDfHA.png)
@@ -259,3 +261,48 @@ Spring的核心组件有：
 ![image-20240918201103847](https://s2.loli.net/2024/09/18/sh9zLbecvn2qJ4w.png)
 
 IOC容器完成！
+
+## Day 8: 实现AOP（1）
+
+AOP的实现主要有基于代理的方式（JDK动态代理和CGLIB代理）和AspectJ方式。
+
+> **JDK动态代理**：使用Java的反射机制，为接口创建代理。只能对实现了接口的类进行代理。
+>
+> **CGLIB代理**：通过生成子类的方式来实现代理，不需要接口，适用于没有实现接口的类。
+>
+> **AspectJ**：一种功能更强大的AOP框架，提供编译时、类加载时和运行时的代理，支持更复杂的切面定义
+>
+> ——By：ChatGPT
+
+对于Spring中具体的用法：
+
+> Spring实际上内置了多种代理机制，如果一个Bean声明的类型是接口，那么Spring直接使用Java标准库实现对接口的代理，如果一个Bean声明的类型是Class，那么Spring就使用CGLIB动态生成字节码实现代理。
+>
+> 除了实现代理外，还得有一套机制让用户能定义代理。Spring又提供了多种方式：
+>
+> 1. 用AspectJ的语法来定义AOP，比如`execution(public * com.itranswarp.service.*.*(..))`；
+> 2. 用注解来定义AOP，比如用`@Transactional`表示开启事务。
+>
+> ——By：廖雪峰
+
+这里我们为了简化需求，只支持Annotation模式的AOP机制，并且采用动态生成字节码的方式实现。
+
+廖雪峰老师用的是ByteBuddy，我们这里还是决定使用CGLIB的方式，也能增强对CGLIB的学习和理解
+
+首先我们需要实现用于代理的解决工具类
+
+### 8. 实现ProxyResolver
+
+导入CGLIB的依赖
+
+```
+<dependency>
+    <groupId>cglib</groupId>
+    <artifactId>cglib</artifactId>
+    <version>3.3.0</version> 
+</dependency>
+
+```
+
+
+
