@@ -287,22 +287,34 @@ AOP的实现主要有基于代理的方式（JDK动态代理和CGLIB代理）和
 
 这里我们为了简化需求，只支持Annotation模式的AOP机制，并且采用动态生成字节码的方式实现。
 
-廖雪峰老师用的是ByteBuddy，我们这里还是决定使用CGLIB的方式，也能增强对CGLIB的学习和理解
+由于CGLIB已经不支持对于Java 17 以上版本的支持，所以我们和廖雪峰老师一样采用ByteBuddy
 
 首先我们需要实现用于代理的解决工具类
 
 ### 8. 实现ProxyResolver
 
-导入CGLIB的依赖
+- **导入ByteBuddy的依赖**
 
 ```
-<dependency>
-    <groupId>cglib</groupId>
-    <artifactId>cglib</artifactId>
-    <version>3.3.0</version> 
-</dependency>
-
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>LATEST</version>
+        </dependency>
 ```
 
+- **使用ByteBuddy实现基本的代理方法**
 
+![image-20240921102912508](https://s2.loli.net/2024/09/21/w4IdohKfgQ317AV.png)
 
+- **手动设置Polite注解，并作用于方法上**
+
+![image-20240921104050968](https://s2.loli.net/2024/09/21/gO4zy9NGa1Q2Vbh.png)
+
+- **实现InvocationHandler类并重写Invoke方法**（这里替换了字符串里面的标点符号）
+
+![image-20240921104514563](https://s2.loli.net/2024/09/21/LmXfwd1aZQeuAiC.png)
+
+- 通过测试
+
+![image-20240921104605077](https://s2.loli.net/2024/09/21/BDqSkQVvRsreif6.png)

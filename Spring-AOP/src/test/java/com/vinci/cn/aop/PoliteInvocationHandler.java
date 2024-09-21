@@ -3,6 +3,9 @@ package com.vinci.cn.aop;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
+/**
+ * 代理执行类，获取被代理的对象和方法，执行代理任务
+ */
 public class PoliteInvocationHandler implements InvocationHandler {
     @Override
     public Object invoke(Object bean, Method method, Object[] args) throws Throwable {
@@ -15,5 +18,8 @@ public class PoliteInvocationHandler implements InvocationHandler {
             return ret;
         }
         return method.invoke(bean, args);
+    }
+
+    public PoliteInvocationHandler() {
     }
 }
