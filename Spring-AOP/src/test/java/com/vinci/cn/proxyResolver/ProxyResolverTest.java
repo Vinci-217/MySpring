@@ -1,6 +1,6 @@
-package com.vinci.cn.aop;
+package com.vinci.cn.proxyResolver;
 
-import com.vinci.cn.ProxyResolver;
+import com.vinci.cn.aop.ProxyResolver;
 import org.junit.jupiter.api.Test;
 
 

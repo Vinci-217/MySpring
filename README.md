@@ -318,3 +318,10 @@ AOP的实现主要有基于代理的方式（JDK动态代理和CGLIB代理）和
 - 通过测试
 
 ![image-20240921104605077](https://s2.loli.net/2024/09/21/BDqSkQVvRsreif6.png)
+
+## Day 9: 实现AOP（2）
+
+### 9. 实现Around
+
+我们手动自定义一个注解@Around
+
