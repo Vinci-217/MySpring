@@ -40,6 +40,7 @@ public class AnnotationConfigApplicationContext implements ConfigurableApplicati
      * @param propertyResolver
      */
     public AnnotationConfigApplicationContext(Class<?> configClass, PropertyResolver propertyResolver) {
+        ApplicationContextUtils.setApplicationContext(this);
         this.propertyResolver = propertyResolver;
 
         // 扫描获取所有Bean的Class类型:

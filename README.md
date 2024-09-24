@@ -287,6 +287,8 @@ AOP的实现主要有基于代理的方式（JDK动态代理和CGLIB代理）和
 
 这里我们为了简化需求，只支持Annotation模式的AOP机制，并且采用动态生成字节码的方式实现。
 
+~~常用的动态代理方式是JDK和CGLIB，这里我们决定使用CGLIB来熟悉其用法~~
+
 由于CGLIB已经不支持对于Java 17 以上版本的支持，所以我们和廖雪峰老师一样采用ByteBuddy
 
 首先我们需要实现用于代理的解决工具类
@@ -323,5 +325,46 @@ AOP的实现主要有基于代理的方式（JDK动态代理和CGLIB代理）和
 
 ### 9. 实现Around
 
-我们手动自定义一个注解@Around
+我们手动自定义一个注解@Around，来表示在这个注解环绕的部分执行特定的方法
 
+注解的value表示的是应该按什么名字查找拦截器
+
+![image-20240924155558102](https://s2.loli.net/2024/09/24/7EHoLxw3VhJtA8R.png)
+
+然后定义一个原始Bean，并使用@Around注解
+
+![image-20240924155656721](https://s2.loli.net/2024/09/24/zFotEhjJOmwXgB3.png)
+
+为此，我们要手动定义一个AroundInvocationHandler，让其实现InvocationHandler，并重写invoke方法
+
+![image-20240924160345018](https://s2.loli.net/2024/09/24/Gh9dTtEl87BUw6O.png)
+
+之后我们在IOC容器中装配这个AOP，但实际上是通过AnnotationProxyBeanPostProcessor装配的，Around继承了Annotation
+
+![image-20240924160508522](https://s2.loli.net/2024/09/24/z2pUX5K4EhBcyql.png)
+
+所以我们应当创建AnnotationProxyBeanPostProcessor来装配AOP
+
+这个类实现了我们之前的BeanPostProcessor
+
+![image-20240924160823645](https://s2.loli.net/2024/09/24/GrdT9t2Lg1X5S47.png)
+
+>上述`AroundProxyBeanPostProcessor`的机制非常简单：检测每个Bean实例是否带有`@Around`注解，如果有，就根据注解的值查找Bean作为`InvocationHandler`，最后创建Proxy，返回前保存了原始Bean的引用，因为IoC容器在后续的注入阶段要把相关依赖和值注入到原始Bean。
+>
+>——By：廖雪峰
+
+AroundProxyBeanPostProcessor的代码如下：
+
+![image-20240924164706223](https://s2.loli.net/2024/09/24/5toRxbvINCmfFSy.png)
+
+> 总结一下，Summer Framework提供的包括：
+>
+> - `Around`注解；
+> - `AroundProxyBeanPostProcessor`实现AOP。
+>
+> 客户端代码需要提供的包括：
+>
+> - 带`@Around`注解的原始Bean；
+> - 实现`InvocationHandler`的Bean，名字与`@Around`注解value保持一致。
+>
+> ——By：廖雪峰
