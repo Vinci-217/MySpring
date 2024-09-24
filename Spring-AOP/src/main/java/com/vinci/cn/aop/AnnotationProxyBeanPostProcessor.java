@@ -82,6 +82,12 @@ public abstract class AnnotationProxyBeanPostProcessor<A extends Annotation> imp
         }
     }
 
+    /**
+     * 在设置属性的时候执行
+     * @param bean
+     * @param beanName
+     * @return
+     */
     @Override
     public Object postProcessOnSetProperty(Object bean, String beanName) {
         Object origin = this.originBeans.get(beanName);

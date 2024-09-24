@@ -368,3 +368,13 @@ AroundProxyBeanPostProcessor的代码如下：
 > - 实现`InvocationHandler`的Bean，名字与`@Around`注解value保持一致。
 >
 > ——By：廖雪峰
+
+实现了Around以后，我们还需要继续实现Before和After的方法。但是由于Around本身实际也包含了Before和After，所以我们可以通过适配器的方式让他俩适配Around。
+
+![image-20240924190651834](https://s2.loli.net/2024/09/24/bIwBXD8i6vUOtnG.png)
+
+![](https://s2.loli.net/2024/09/24/bIwBXD8i6vUOtnG.png)
+
+由于后续可能有自定义注解AOP的情况，所以我们将Around部分代码提取成抽象类AnnotationProxyBeanPostProcessor，让Around继承这部分
+
+至此，完成手写
