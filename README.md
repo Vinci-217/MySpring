@@ -377,4 +377,21 @@ AroundProxyBeanPostProcessor的代码如下：
 
 由于后续可能有自定义注解AOP的情况，所以我们将Around部分代码提取成抽象类AnnotationProxyBeanPostProcessor，让Around继承这部分
 
-至此，完成手写
+至此，完成手写AOP部分
+
+## Day 10: 实现JDBC和事务（1）
+
+> Spring对JDBC数据库的支持主要包括：
+>
+> 1. 提供了一个`JdbcTemplate`和`NamedParameterJdbcTemplate`模板类，可以方便地操作JDBC；
+> 2. 支持流行的ORM框架，如Hibernate、JPA等；
+> 3. 支持声明式事务，只需要通过简单的注解配置即可实现事务管理。
+>
+> ——By：廖雪峰
+
+我们这里为了简化，只实现JdbcTemplate以及声明式事务
+
+### 10. 实现JdbcTemplate
+
+我们仿照SpringBoot的方式，使用HikariCP作为连接池
+
