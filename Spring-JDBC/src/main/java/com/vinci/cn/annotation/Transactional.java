@@ -1,4 +1,4 @@
-package annotation;
+package com.vinci.cn.annotation;
 
 import java.lang.annotation.*;
 

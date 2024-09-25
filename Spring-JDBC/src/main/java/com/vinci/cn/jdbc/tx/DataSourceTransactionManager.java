@@ -1,4 +1,4 @@
-package jdbc.tx;
+package com.vinci.cn.jdbc.tx;
 
 import com.vinci.cn.exception.TransactionException;
 import org.slf4j.Logger;

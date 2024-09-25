@@ -1,5 +1,6 @@
-package jdbc;
+package com.vinci.cn.jdbc;
 
+import com.vinci.cn.annotation.Autowired;
 import com.vinci.cn.annotation.Bean;
 import com.vinci.cn.annotation.Configuration;
 import com.vinci.cn.annotation.Value;

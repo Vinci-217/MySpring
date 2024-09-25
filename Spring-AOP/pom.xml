@@ -55,7 +55,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.example</groupId>
+            <groupId>com.vinci.cn</groupId>
             <artifactId>Spring-IOC</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>

@@ -1,4 +1,4 @@
-package jdbc;
+package com.vinci.cn.jdbc;
 
 import jakarta.annotation.Nullable;
 

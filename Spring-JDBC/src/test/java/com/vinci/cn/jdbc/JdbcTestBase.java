@@ -1,6 +1,7 @@
 package com.vinci.cn.jdbc;
 
-import com.vinci.cn.io.PropertyResolver;
+
+import com.vinci.cn.property.PropertyResolver;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;

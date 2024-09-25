@@ -1,4 +1,4 @@
-package exception;
+package com.vinci.cn.exception;
 
 public class TransactionException extends DataAccessException {
 

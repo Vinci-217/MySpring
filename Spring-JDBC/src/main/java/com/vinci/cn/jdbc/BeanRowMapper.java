@@ -1,6 +1,7 @@
-package jdbc;
+package com.vinci.cn.jdbc;
 
 
+import com.vinci.cn.exception.DataAccessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package jdbc;
+package com.vinci.cn.jdbc;
 
 import com.vinci.cn.exception.DataAccessException;
 import com.vinci.cn.jdbc.tx.TransactionalUtils;
