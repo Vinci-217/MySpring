@@ -5,6 +5,10 @@ import jakarta.annotation.Nullable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 接口类，用于从ResultSet中提取数据
+ * @param <T>
+ */
 @FunctionalInterface
 public interface ResultSetExtractor<T> {
 

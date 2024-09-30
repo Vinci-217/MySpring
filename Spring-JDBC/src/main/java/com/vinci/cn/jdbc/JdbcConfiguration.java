@@ -12,9 +12,23 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import javax.sql.DataSource;
 
+/**
+ * 配置类，用于创建数据源、JdbcTemplate、PlatformTransactionManager等bean
+ */
 @Configuration
 public class JdbcConfiguration {
 
+    /**
+     * 读取配置文件中的数据源配置，并创建HikariCP数据源
+     * @param url
+     * @param username
+     * @param password
+     * @param driver
+     * @param maximumPoolSize
+     * @param minimumPoolSize
+     * @param connTimeout
+     * @return
+     */
     @Bean(destroyMethod = "close")
     DataSource dataSource(
             // properties:
@@ -26,7 +40,7 @@ public class JdbcConfiguration {
             @Value("${summer.datasource.minimum-pool-size:1}") int minimumPoolSize, //
             @Value("${summer.datasource.connection-timeout:30000}") int connTimeout //
     ) {
-        var config = new HikariConfig();
+        HikariConfig config = new HikariConfig();
         config.setAutoCommit(false);
         config.setJdbcUrl(url);
         config.setUsername(username);
@@ -37,6 +51,7 @@ public class JdbcConfiguration {
         config.setMaximumPoolSize(maximumPoolSize);
         config.setMinimumIdle(minimumPoolSize);
         config.setConnectionTimeout(connTimeout);
+        // 一个小细节，这里使用了防御式编程
         return new HikariDataSource(config);
     }
 

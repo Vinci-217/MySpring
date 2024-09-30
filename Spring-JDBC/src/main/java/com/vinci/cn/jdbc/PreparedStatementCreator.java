@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * 接口类，用于创建PreparedStatement对象
+ */
 @FunctionalInterface
 public interface PreparedStatementCreator {
 

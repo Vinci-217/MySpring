@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 自定义JdbcTemplate类，封装了常用的JDBC操作，包括查询、更新、事务等。
+ */
 public class JdbcTemplate {
 
     final DataSource dataSource;
@@ -107,6 +110,14 @@ public class JdbcTemplate {
                 });
     }
 
+
+    /**
+     *
+     * @param psc PreparedStatementCreator 回调接口
+     * @param action PreparedStatementCallback 回调接口
+     * @return
+     * @param <T>
+     */
     public <T> T execute(PreparedStatementCreator psc, PreparedStatementCallback<T> action) {
         return execute((Connection con) -> {
             try (PreparedStatement ps = psc.createPreparedStatement(con)) {
@@ -115,6 +126,16 @@ public class JdbcTemplate {
         });
     }
 
+
+    // JdbcTemplate基于Template模式，提供了大量以回调作为参数的模板方法，
+    // 其中以execute(ConnectionCallback)为基础
+    /**
+     * 执行JDBC操作，根据当前事务状态获取连接，如果存在事务则使用事务连接，否则获取新的连接。
+     * @param action
+     * @return
+     * @param <T>
+     * @throws DataAccessException
+     */
     public <T> T execute(ConnectionCallback<T> action) throws DataAccessException {
         // 尝试获取当前事务连接:
         Connection current = TransactionalUtils.getCurrentConnection();

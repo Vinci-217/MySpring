@@ -395,3 +395,32 @@ AroundProxyBeanPostProcessor的代码如下：
 
 我们仿照SpringBoot的方式，使用HikariCP作为连接池
 
+先导入对应的依赖：
+
+```
+<!--        数据库连接池-->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+<!--        JDBC驱动-->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.41.2.2</version>
+            <scope>test</scope>
+        </dependency>
+```
+
+如果要使用数据库的话，需要像廖老师一样在yml文件中配置具体的DataSource举例如下：
+
+```
+summer:
+  datasource:
+    url: jdbc:sqlite:test.db
+    driver-class-name: org.sqlite.JDBC
+    username: sa
+    password: 
+```
+
