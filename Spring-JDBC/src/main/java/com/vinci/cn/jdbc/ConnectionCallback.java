@@ -12,6 +12,7 @@ import java.sql.SQLException;
 @FunctionalInterface
 public interface ConnectionCallback<T> {
 
+    // 回调Connection对象，返回结果
     @Nullable
     T doInConnection(Connection con) throws SQLException;
 

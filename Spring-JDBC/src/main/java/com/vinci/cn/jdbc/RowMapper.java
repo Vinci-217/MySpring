@@ -12,6 +12,7 @@ import java.sql.SQLException;
 @FunctionalInterface
 public interface RowMapper<T> {
 
+    // 将查询结果集中的每一行映射为一个对象
     @Nullable
     T mapRow(ResultSet rs, int rowNum) throws SQLException;
 

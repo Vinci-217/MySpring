@@ -1,5 +1,8 @@
 package com.vinci.cn.exception;
 
+/**
+ * 异常类：事务异常
+ */
 public class TransactionException extends DataAccessException {
 
     public TransactionException() {

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 @FunctionalInterface
 public interface PreparedStatementCreator {
 
+    // 根据Connection对象创建PreparedStatement对象
     PreparedStatement createPreparedStatement(Connection con) throws SQLException;
 
 }

@@ -15,6 +15,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 实现RowMapper接口，将ResultSet中的数据映射到JavaBean对象中。
+ * @param <T>
+ */
 public class BeanRowMapper<T> implements RowMapper<T> {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
@@ -25,6 +29,7 @@ public class BeanRowMapper<T> implements RowMapper<T> {
     Map<String, Method> methods = new HashMap<>();
 
     public BeanRowMapper(Class<T> clazz) {
+        //注入实际的类、构造方法、字段、方法映射关系
         this.clazz = clazz;
         try {
             this.constructor = clazz.getConstructor();
@@ -49,6 +54,13 @@ public class BeanRowMapper<T> implements RowMapper<T> {
         }
     }
 
+    /**
+     * 将ResultSet中的数据映射到JavaBean对象中。
+     * @param rs
+     * @param rowNum
+     * @return
+     * @throws SQLException
+     */
     @Override
     public T mapRow(ResultSet rs, int rowNum) throws SQLException {
         T bean;

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 @FunctionalInterface
 public interface PreparedStatementCallback<T> {
 
+    // 对PreparedStatement进行操作，并返回结果
     @Nullable
     T doInPreparedStatement(PreparedStatement ps) throws SQLException;
 

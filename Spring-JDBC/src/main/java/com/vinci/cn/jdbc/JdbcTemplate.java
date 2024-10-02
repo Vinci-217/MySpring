@@ -23,8 +23,18 @@ public class JdbcTemplate {
         return queryForObject(sql, NumberRowMapper.instance, args);
     }
 
+    /**
+     * 查询单个对象，根据返回值类型自动选择RowMapper。
+     * @param sql
+     * @param clazz
+     * @param args
+     * @return
+     * @param <T>
+     * @throws DataAccessException
+     */
     @SuppressWarnings("unchecked")
     public <T> T queryForObject(String sql, Class<T> clazz, Object... args) throws DataAccessException {
+        // 根据返回值类型自动选择RowMapper
         if (clazz == String.class) {
             return (T) queryForObject(sql, StringRowMapper.instance, args);
         }
@@ -37,6 +47,15 @@ public class JdbcTemplate {
         return queryForObject(sql, new BeanRowMapper<>(clazz), args);
     }
 
+    /**
+     * 查询单个对象，根据RowMapper对象进行映射。
+     * @param sql
+     * @param rowMapper
+     * @param args
+     * @return
+     * @param <T>
+     * @throws DataAccessException
+     */
     public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
         return execute(preparedStatementCreator(sql, args),
                 // PreparedStatementCallback
@@ -58,15 +77,35 @@ public class JdbcTemplate {
                 });
     }
 
+    /**
+     * 查询多个对象，根据返回值类型自动选择RowMapper。
+     * @param sql
+     * @param clazz
+     * @param args
+     * @return
+     * @param <T>
+     * @throws DataAccessException
+     */
     public <T> List<T> queryForList(String sql, Class<T> clazz, Object... args) throws DataAccessException {
         return queryForList(sql, new BeanRowMapper<>(clazz), args);
     }
 
+    /**
+     * 查询多个对象，根据RowMapper对象进行映射。
+     * @param sql
+     * @param rowMapper
+     * @param args
+     * @return
+     * @param <T>
+     * @throws DataAccessException
+     */
     public <T> List<T> queryForList(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+        // 创建PreparedStatementCreator回调接口的实现类，用于创建PreparedStatement对象。
         return execute(preparedStatementCreator(sql, args),
                 // PreparedStatementCallback
                 (PreparedStatement ps) -> {
                     List<T> list = new ArrayList<>();
+                    // 执行查询，将结果集中的每一行数据映射为对象并添加到List中。
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
                             list.add(rowMapper.mapRow(rs, rs.getRow()));
@@ -76,6 +115,13 @@ public class JdbcTemplate {
                 });
     }
 
+    /**
+     * 更新并返回生成的主键值。
+     * @param sql
+     * @param args
+     * @return
+     * @throws DataAccessException
+     */
     public Number updateAndReturnGeneratedKey(String sql, Object... args) throws DataAccessException {
         return execute(
                 // PreparedStatementCreator
@@ -93,6 +139,7 @@ public class JdbcTemplate {
                     if (n > 1) {
                         throw new DataAccessException("Multiple rows inserted.");
                     }
+                    // 获取生成的主键值
                     try (ResultSet keys = ps.getGeneratedKeys()) {
                         while (keys.next()) {
                             return (Number) keys.getObject(1);
@@ -102,6 +149,13 @@ public class JdbcTemplate {
                 });
     }
 
+    /**
+     * 更新数据库，并返回更新的行数。
+     * @param sql
+     * @param args
+     * @return
+     * @throws DataAccessException
+     */
     public int update(String sql, Object... args) throws DataAccessException {
         return execute(preparedStatementCreator(sql, args),
                 // PreparedStatementCallback
@@ -119,16 +173,20 @@ public class JdbcTemplate {
      * @param <T>
      */
     public <T> T execute(PreparedStatementCreator psc, PreparedStatementCallback<T> action) {
+        // 调用execute(ConnectionCallback)方法，传入ConnectionCallback接口的实现类
+        // 该实现类中调用PreparedStatementCreator的createPreparedStatement方法创建PreparedStatement对象，
+        // 并调用PreparedStatementCallback的doInPreparedStatement方法执行PreparedStatement操作，
+        // 最后返回操作结果。
         return execute((Connection con) -> {
             try (PreparedStatement ps = psc.createPreparedStatement(con)) {
+                // 执行具体的操作并返回结果
                 return action.doInPreparedStatement(ps);
             }
         });
     }
 
 
-    // JdbcTemplate基于Template模式，提供了大量以回调作为参数的模板方法，
-    // 其中以execute(ConnectionCallback)为基础
+    // 这里实际上是实现了回调函数具体的执行
     /**
      * 执行JDBC操作，根据当前事务状态获取连接，如果存在事务则使用事务连接，否则获取新的连接。
      * @param action
@@ -139,6 +197,7 @@ public class JdbcTemplate {
     public <T> T execute(ConnectionCallback<T> action) throws DataAccessException {
         // 尝试获取当前事务连接:
         Connection current = TransactionalUtils.getCurrentConnection();
+        // 如果存在事务连接，则直接使用该连接执行操作:
         if (current != null) {
             try {
                 return action.doInConnection(current);
@@ -152,6 +211,7 @@ public class JdbcTemplate {
             if (!autoCommit) {
                 newConn.setAutoCommit(true);
             }
+            // 执行操作，并返回执行的结果:
             T result = action.doInConnection(newConn);
             if (!autoCommit) {
                 newConn.setAutoCommit(false);
@@ -162,6 +222,12 @@ public class JdbcTemplate {
         }
     }
 
+    /**
+     * 创建PreparedStatementCreator回调接口的实现类，用于创建PreparedStatement对象。
+     * @param sql
+     * @param args
+     * @return
+     */
     private PreparedStatementCreator preparedStatementCreator(String sql, Object... args) {
         return (Connection con) -> {
             var ps = con.prepareStatement(sql);
@@ -170,6 +236,12 @@ public class JdbcTemplate {
         };
     }
 
+    /**
+     * 绑定参数到PreparedStatement对象中，相当于把参数值设置到PreparedStatement对象的占位符上。
+     * @param ps
+     * @param args
+     * @throws SQLException
+     */
     private void bindArgs(PreparedStatement ps, Object... args) throws SQLException {
         for (int i = 0; i < args.length; i++) {
             ps.setObject(i + 1, args[i]);
@@ -177,6 +249,9 @@ public class JdbcTemplate {
     }
 }
 
+/**
+ * 实现了RowMapper接口，用于将ResultSet中的每一行字符串类型的数据映射为一个对象。
+ */
 class StringRowMapper implements RowMapper<String> {
 
     static StringRowMapper instance = new StringRowMapper();
@@ -187,6 +262,9 @@ class StringRowMapper implements RowMapper<String> {
     }
 }
 
+/**
+ * 实现了RowMapper接口，用于将ResultSet中的每一行Boolean类型的数据映射为一个对象。
+ */
 class BooleanRowMapper implements RowMapper<Boolean> {
 
     static BooleanRowMapper instance = new BooleanRowMapper();
@@ -197,6 +275,9 @@ class BooleanRowMapper implements RowMapper<Boolean> {
     }
 }
 
+/**
+ * 实现了RowMapper接口，用于将ResultSet中的每一行数据类型的数据映射为一个对象。
+ */
 class NumberRowMapper implements RowMapper<Number> {
 
     static NumberRowMapper instance = new NumberRowMapper();
